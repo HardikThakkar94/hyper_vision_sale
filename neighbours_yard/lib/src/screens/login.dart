@@ -29,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
             color: Colors.white,
           ),
           label: Text(
-            "v0.1.11-a.1",
+            "v1.1.11-b.2",
             textAlign: TextAlign.left,
             style: TextStyle(color: Colors.white, fontSize: 9),
           ),
