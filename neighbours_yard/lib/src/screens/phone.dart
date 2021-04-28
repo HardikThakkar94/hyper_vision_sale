@@ -59,6 +59,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
       children: [
         Spacer(),
         TextField(
+          keyboardType: TextInputType.number,
           controller: phoneController,
           decoration: InputDecoration(
             hintText: "🔢 Phone Number",
@@ -116,6 +117,7 @@ class _PhoneScreenState extends State<PhoneScreen> {
       children: [
         Spacer(),
         TextField(
+          keyboardType: TextInputType.number,
           controller: otpController,
           decoration: InputDecoration(
             hintText: "📲 Enter  OTP",

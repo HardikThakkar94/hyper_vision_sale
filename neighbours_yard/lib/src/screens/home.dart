@@ -487,8 +487,9 @@ class _HomeState extends State<HomeScreen> {
         result = result +
             imageLabel.text +
             " : " +
-            imageLabel.confidence.toString() +
-            "\n";
+            imageLabel.confidence.toString().substring(2, 4) +
+            "%"
+                "\n";
       });
     }
   }
