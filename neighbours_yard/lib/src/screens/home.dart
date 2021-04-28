@@ -44,7 +44,7 @@ class _HomeState extends State<HomeScreen> {
   final ImageLabeler _imageLabeler =
       FirebaseVision.instance.imageLabeler(); //remove later
   var result;
-
+  Dialog dialog = new Dialog();
   bool uploading = false;
   double val = 0;
   bool uploaded = false;
@@ -76,6 +76,33 @@ class _HomeState extends State<HomeScreen> {
             child: ListBody(
               children: <Widget>[
                 Text('Please proceed with the image upload process.'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Understood'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _proceedWithListing() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Image Selection Error'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Please proceed with the listing item process.'),
               ],
             ),
           ),
@@ -126,27 +153,26 @@ class _HomeState extends State<HomeScreen> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Uploading Image'),
+          title: Text('Uploading Images, Please Wait...'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
                 Text(uploaded
                     ? 'Please click the button below.'
-                    : 'Please wait while we upload your images and make them presentable.'),
+                    : 'We are makeing your images presentable, Give us a min.'),
               ],
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Proceed'),
+              child: Text('Alright'),
               onPressed: () async {
-                uploaded ? null : _pleaseWait();
+                // uploaded ? null : _pleaseWait();
                 while (true) {
                   if (uploaded == true) {
                     Navigator.of(context).pop();
-                    break;
                   }
-                  await new Future.delayed(const Duration(seconds: 5));
+                  await new Future.delayed(const Duration(seconds: 3));
                 }
               },
             ),
@@ -292,16 +318,20 @@ class _HomeState extends State<HomeScreen> {
             ),
             new ElevatedButton.icon(
                 onPressed: () {
-                  if (_imageFileList.length > 0) {
-                    setState(() {
-                      uploading =
-                          true; // update state boolean variable uploading to true
-                    });
-                    uploadFile();
-                    _getLocation();
+                  if (uploaded == false) {
+                    if (_imageFileList.length > 0) {
+                      setState(() {
+                        uploading =
+                            true; // update state boolean variable uploading to true
+                      });
+                      uploadFile();
+                      _getLocation();
+                    } else {
+                      print(_imageFileList.length);
+                      _uploadMoreImageDialog();
+                    }
                   } else {
-                    print(_imageFileList.length);
-                    _uploadMoreImageDialog();
+                    _proceedWithListing();
                   }
                 },
                 icon: Icon(
